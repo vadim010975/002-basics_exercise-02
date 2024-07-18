@@ -56,9 +56,14 @@ class StudentController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $group, string $student_surname): \Illuminate\Contracts\View\View|\Illuminate\Contracts\View\Factory|\Illuminate\Foundation\Application
+    public function show(string $group_title, string $student_surname): \Illuminate\Contracts\View\View|\Illuminate\Contracts\View\Factory|\Illuminate\Foundation\Application
     {
-        $student = Student::all()->where('surname', $student_surname)->first();
+        $group = Group::all()->where('title', $group_title)->first();
+
+        $students = $group->students;
+
+        $student = $students->where('surname', $student_surname)->first();
+
         return view('student.show', [
             'id' => $student->id,
             'group_id' => $student->group_id,
