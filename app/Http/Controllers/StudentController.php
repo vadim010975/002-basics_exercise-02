@@ -20,49 +20,38 @@ class StudentController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create($group_title): \Illuminate\Contracts\View\View|\Illuminate\Contracts\View\Factory|\Illuminate\Foundation\Application
+    public function create($groupTitle): \Illuminate\Contracts\View\View|\Illuminate\Contracts\View\Factory|\Illuminate\Foundation\Application
     {
         return view('student.create', [
-            'group_title' => $group_title,
-            'back' => '/groups/' . $group_title,
-            ]);
+            'group_title' => $groupTitle,
+            'back' => '/groups/' . $groupTitle,
+        ]);
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(Request $request): \Illuminate\Foundation\Application|\Illuminate\Routing\Redirector|\Illuminate\Http\RedirectResponse
     {
-        $input = $request->all();
-        if(isset($input['_token']))
-        {
-            unset($input['_token']);
-        }
-        $group_id = '';
-        $group_title = '';
-        if(isset($input['group_title']))
-        {
-            $group_title =$input['group_title'];
-            $group_id = Group::all()->where('title', $group_title)->value('id');
-            unset($input['group_title']);
-        }
-        $input['group_id'] = $group_id;
-        $input['created_at'] = date('Y-m-d H:i:s');
-        $input['updated_at'] = date('Y-m-d H:i:s');
-        DB::table('students')->insert($input);
-        return redirect('/groups/' . $group_title);
+        $input = $request->except(['_token']);
+        $groupTitle = $input['group_title'];
+        $groupId = Group::all()->where('title', $groupTitle)->value('id');
+        unset($input['group_title']);
+        $input['group_id'] = $groupId;
+        Student::query()->create($input);
+        return redirect('/groups/' . $groupTitle);
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(string $group_title, string $student_surname): \Illuminate\Contracts\View\View|\Illuminate\Contracts\View\Factory|\Illuminate\Foundation\Application
+    public function show(string $groupTitle, string $studentSurname): \Illuminate\Contracts\View\View|\Illuminate\Contracts\View\Factory|\Illuminate\Foundation\Application
     {
-        $group = Group::all()->where('title', $group_title)->first();
+        $group = Group::all()->where('title', $groupTitle)->first();
 
         $students = $group->students;
 
-        $student = $students->where('surname', $student_surname)->first();
+        $student = $students->where('surname', $studentSurname)->first();
 
         return view('student.show', [
             'id' => $student->id,

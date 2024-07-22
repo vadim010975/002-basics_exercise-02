@@ -13,9 +13,9 @@ return new class extends Migration
     {
         Schema::create('students', function (Blueprint $table) {
             $table->id();
-            $table->integer('group_id')->default(0);
-            $table->string('surname')->default('');
-            $table->string('name')->default('');
+            $table->integer('group_id')->nullable();
+            $table->string('surname')->nullable();
+            $table->string('name')->nullable();
             $table->timestamps();
         });
     }

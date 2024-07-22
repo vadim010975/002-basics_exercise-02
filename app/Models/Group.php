@@ -9,9 +9,7 @@ use Illuminate\Database\Eloquent\Model;
 class Group extends Model
 {
     use HasFactory;
-    public $timestamps = true;
-    const CREATED_AT = 'created_at';
-    const UPDATED_AT = 'updated_at';
+    protected $guarded = ['id', 'created_at', 'updated_at'];
     public function students(): HasMany
     {
         return $this->hasMany(Student::class);

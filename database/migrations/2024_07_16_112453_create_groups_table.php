@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('groups', function (Blueprint $table) {
             $table->id();
-            $table->string('title')->default('');
-            $table->date('start_from')->default('');
+            $table->string('title')->nullable();
+            $table->date('start_from')->nullable();
             $table->boolean('is_active')->default(false);
             $table->timestamps();
         });

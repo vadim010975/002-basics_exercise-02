@@ -14,7 +14,7 @@
 <form name="form_create_student" method="POST" action="/groups/{{$group_title}}/students">
     @csrf
     <label>Группа {{$group_title}}
-        <input type="hidden" name="group_title" value="{{$group_title}}">
+        <input type="hidden" name="group_title" value="{{$group_title}}" required>
     </label>
     <br>
     <label>Фамилия студента
